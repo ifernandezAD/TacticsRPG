@@ -23,12 +23,10 @@ public struct GridPosition : IEquatable<GridPosition>
         return this == other;
     }
 
-    public override int GetHashCode() //Si pasa algo raro con el Grid este es el principal sospechoso xD
+    public override int GetHashCode()
     {
-        return x * 10000 + z;
+        return HashCode.Combine(x, z);
     }
-
-  
 
     public override string ToString()
     {
@@ -45,4 +43,14 @@ public struct GridPosition : IEquatable<GridPosition>
         return
             !(a == b);
     }
+
+    public static GridPosition operator +(GridPosition a, GridPosition b)
+    {
+        return new GridPosition(a.x + b.x, a.z + b.z);
+    }
+    public static GridPosition operator -(GridPosition a, GridPosition b)
+    {
+        return new GridPosition(a.x - b.x, a.z - b.z);
+    }
+
 }
