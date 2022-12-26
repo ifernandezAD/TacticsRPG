@@ -26,5 +26,11 @@ public abstract class BaseAction : MonoBehaviour
     }
 
     public abstract List<GridPosition> GetValidActionGridPositionList();
+
+    public virtual int GetActionPointCost()
+    {
+        //By default all actions cost 1 but then be can override in case one action costs more or less
+        return 1;
+    }
 }
 
