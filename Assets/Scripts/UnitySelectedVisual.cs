@@ -37,4 +37,10 @@ public class UnitySelectedVisual : MonoBehaviour
             meshRenderer.enabled = false;
         }
     }
+
+    //Generic, call automatic when this is destroyed
+    private void OnDestroy()
+    {
+        UnitActionSystem.Instance.OnSelectedUnitChanged -= UnitActionSystem_OnSelectedUnitChanged;
+    }
 }
