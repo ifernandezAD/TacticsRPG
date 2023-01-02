@@ -1,13 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class MoveAction : BaseAction
 {
 
-    [SerializeField] private Animator unitAnimator;
-    [SerializeField] private int maxMoveDistance;
+    public event EventHandler OnStartMoving;
+    public event EventHandler OnStopMoving;
+
+
+
+    [SerializeField] private int maxMoveDistance = 4;
 
     private Vector3 targetPosition;
 
@@ -29,30 +33,29 @@ public class MoveAction : BaseAction
         float stoppingDistance = .1f;
         if (Vector3.Distance(transform.position, targetPosition) > stoppingDistance)
         {
-            
             float moveSpeed = 4f;
             transform.position += moveDirection * moveSpeed * Time.deltaTime;
-
-            unitAnimator.SetBool("IsWalking", true);
         }
         else
         {
-            unitAnimator.SetBool("IsWalking", false);
+            OnStopMoving?.Invoke(this, EventArgs.Empty);
 
             ActionComplete();
         }
 
         float rotateSpeed = 10f;
-        transform.forward = Vector3.Lerp(transform.forward, moveDirection, rotateSpeed * Time.deltaTime);
+        transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
     }
 
-    public override void TakeAction(GridPosition gridPosition, Action onActionComplete )
+
+    public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        ActionStart(onActionComplete);       
+        ActionStart(onActionComplete);
 
-        this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);      
+        this.targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+
+        OnStartMoving?.Invoke(this, EventArgs.Empty);
     }
-
 
     public override List<GridPosition> GetValidActionGridPositionList()
     {
@@ -74,20 +77,23 @@ public class MoveAction : BaseAction
 
                 if (unitGridPosition == testGridPosition)
                 {
-
+                    // Same Grid Position where the unit is already at
                     continue;
                 }
 
                 if (LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
                 {
+                    // Grid Position already occupied with another Unit
                     continue;
                 }
 
                 validGridPositionList.Add(testGridPosition);
-            }       
+            }
         }
+
         return validGridPositionList;
     }
+
 
     public override string GetActionName()
     {
