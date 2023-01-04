@@ -85,7 +85,7 @@ public class ShootAction : BaseAction
     private void Shoot()
     {
         OnShoot?.Invoke(this, new OnShootEventArgs { targetUnit = targetUnit, shootingUnit = unit } );
-        targetUnit.Damage(100); // Base value, 3 hits kills the Unit
+        targetUnit.Damage(40); // Base value, 3 hits kills the Unit
     }
 
 
