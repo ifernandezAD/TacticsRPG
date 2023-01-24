@@ -1,9 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Testing : MonoBehaviour
+public class ExecuteEveryXFrames : MonoBehaviour
 {
     public int frameInterval;
 
@@ -11,9 +10,7 @@ public class Testing : MonoBehaviour
     {
         if (Time.frameCount % frameInterval == 0)
         {
-            Debug.Log("I am Ironman");          
+            Debug.Log("I am Ironman");
         }
     }
-
 }
-
